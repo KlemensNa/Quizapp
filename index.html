@@ -23,32 +23,32 @@
             <img src="/img/quiztheme.jpg" class="card-img-top">
             <h2 id="question">Frage Zahl???</h2>
             <div class="card answer">
-                <div class="card-body" id="a1">
+                <div class="card-body" id="answer1" onclick="logAnswer(id)">
                     Answer 1
                 </div>
             </div>
 
             <div class="card answer">
-                <div class="card-body" id="a2">
+                <div class="card-body" id="answer2" onclick="logAnswer(id)">
                     Answer 2
                 </div>
             </div>
 
             <div class="card answer">
-                <div class="card-body" id="a3">
+                <div class="card-body" id="answer3" onclick="logAnswer(id)">
                     Answer 3
                 </div>
             </div>
 
             <div class="card answer">
-                <div class="card-body" id="a4">
+                <div class="card-body" id="answer4" onclick="logAnswer(id)">
                     Answer 4
                 </div>
             </div>
 
             <div class="cardFooter">
                 <div><b>1 </b> von <b id="questionsAmount"> </b> Fragen</div>
-                <button type="button" class="btn btn-warning">Nächste</button>
+                <div id="buttonAnswer"></div>
             </div>
 
         </div>

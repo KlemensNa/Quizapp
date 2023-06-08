@@ -20,9 +20,21 @@ body{
     margin: 24px;
 }
 
+.card-body{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .answer{
     width:95%;
     margin-bottom: 8px;
+}
+
+.answer:hover{ 
+    background-color: rgba(0, 0, 0, 0.033);
+    cursor: pointer;
 }
 
 .cardFooter{
@@ -32,3 +44,20 @@ body{
     padding: 12px 0;
     border-top: 1px solid rgba(0, 0, 0, 0.479);
 }
+
+.d-block{
+    display: block;
+}
+
+.d-visibility{
+    visibility: hidden !important;
+}
+
+.bg-locked{
+    background-color: rgba(0, 0, 0, 0.208);
+}
+
+
+.bg-success, .bg-danger{
+    color: white !important;
+}   
