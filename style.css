@@ -1,13 +1,87 @@
-body{
-    margin: 0;
+html{
+    height: 100%;
 }
 
+body{
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
 
-#cardContainer{
-    min-height: 100vh;
+#cardContain{
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 80%;
+}
+
+#startscreen{
+    height: 85%;
+    flex: 1;
+    background-image: url(img/Quizapp/brainbg.jpg);
+    background-position: center;
+    background-size: contain;
+    display: flex;
+    justify-content: center;
+    gap: 120px
+}
+
+#startBtn{
+    background-color: #27355C;
+    color: white;
+}
+
+#menu{
+    height: 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%; 
+    background-color: #27355C;
+    color: #9DA8C6;
+}
+
+#menu img{
+    margin-top: 32px;
+}
+
+#menuList{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 120px 0;    
+    width: 100%
+}
+
+.category{
+    width: 100%;
+    text-align: center;
+}
+
+.category:hover{
+    color: white;
+    border-left: 4px solid white;
+}
+
+.active{
+    color: white;
+    border-left: 4px solid white;
+}
+
+#playscreen{
+    height: 85%;
+    background-color: #F7F7F7;
+    width: 750px;
+}
+
+#playscreen img{
+    height: 150px;
+    object-fit: cover;
 }
 
 .card{
@@ -57,6 +131,39 @@ body{
     background-color: rgba(0, 0, 0, 0.208);
 }
 
+#endscreen{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    height: 90vh;
+}
+
+#twoButtons{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1px;
+}
+
+#score{
+    width: 100%;
+    font-size: 24px;
+    padding: 24px 0;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+#scoreText{
+    color: rgb(226, 169, 11);
+}
+
+.btn{
+    min-width: 140px;
+}
 
 .bg-success, .bg-danger{
     color: white !important;
