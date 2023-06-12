@@ -23,7 +23,7 @@ body{
     flex: 1;
     background-image: url(img/Quizapp/brainbg.jpg);
     background-position: center;
-    background-size: contain;
+    background-size: cover;
     display: flex;
     justify-content: center;
     gap: 120px;
@@ -45,7 +45,7 @@ body{
 }
 
 #menu img{
-    margin-top: 32px;
+    margin-top: 80px;
 }
 
 #menuList{
@@ -153,6 +153,14 @@ body{
     background-color: rgba(0, 0, 0, 0.208);
 }
 
+.d-flex{
+    display: flex !important;
+}
+
+.d-block{
+    display: block !important;
+}
+
 #endscreen{
     display: flex;
     flex-direction: column;
@@ -191,4 +199,118 @@ body{
 
 .bg-success, .bg-danger{
     color: white !important;
-}   
+}
+
+#burgerMenu{
+    display:none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: white;
+    color: #27355C;
+    width: 55px;
+    height: 45px;
+    border-radius: 5px;
+    border-style: double;
+    margin-right: 32px;
+}
+
+#burgerMenu p{
+    width: 32px;
+    height: 4px;
+    margin: 2px;
+    background-color: #27355C;
+}
+
+#burgerMenu:hover{
+    cursor: pointer;
+}
+
+#close{
+    display: none;
+    background-color: #9DA8C6;
+    color: #27355C;
+}
+
+
+
+
+@media(max-width: 768px){
+    #cardContain{        
+        width: 100%;
+        flex-direction: column;
+    }
+
+    #startscreen{
+        width: 100%;
+    }
+
+    #menu{
+        height: 130px;
+        width: 100%; 
+        flex-direction: row;
+    }
+
+    #menuList{
+        flex-direction: row;
+        gap: 56px;
+        padding: 0;
+    }
+
+    .category{
+        width:fit-content;
+    }
+
+    #menu img{
+        margin-top: 0px;
+        padding-left: 32px;
+    }
+
+    .category:hover{       
+        border-left: none;        
+    }
+    
+    .active{
+        border-left: none;        
+    }
+
+    #startscreen{
+        height: 100%;        
+    }
+
+}
+
+
+@media(max-width: 576px){
+
+    #startscreen{
+        background-size: cover;        
+    }
+
+
+    #menu{
+        justify-content: space-between;
+    }
+
+    #menuList{
+        display: none;
+        z-index: 11;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        background-color: #27355C;
+        flex-direction: column;
+        padding: 60px  0;
+        gap: 16px;
+    }
+
+    #burgerMenu{
+       display: flex;
+    }
+
+    #menuList{
+        justify-content: flex-end;
+    }
+
+}

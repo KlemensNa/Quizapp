@@ -3,6 +3,7 @@ let score = 0;
 
 function init() {
     document.getElementById('cardContain').innerHTML = /*html*/`
+    
         <div id="menu" class="card">
             <img src="/img/Quizapp/logo.png" alt="">
             <div id="menuList">
@@ -10,6 +11,12 @@ function init() {
                 <h3 id="sports" class="category" onclick="getReadyToStart('sports')">Sport</h3>
                 <h3 id="it" class="category" onclick="getReadyToStart('it')">IT</h3>
                 <h3 id="movies" class="category" onclick="getReadyToStart('movies')">Filme</h3>
+                <button type="button" id="close" class="btn" onclick="toggleSelectionMenu()">Close</button>                   
+            </div>
+            <div id="burgerMenu" onclick="toggleSelectionMenu()">
+                <p></p>
+                <p></p>
+                <p></p>
             </div>
         </div>
 
@@ -51,16 +58,23 @@ function createStartbutton() {
 
 function startQuiz() {
     blockCategoryButtons();
+    blockBurgerMenu();
     createPlayscreen();
     showQuestionAmount();
     renderQuestion(v);
+    toggleSelectionMenu();
+}
+
+
+function blockBurgerMenu(){
+    document.getElementById('burgerMenu').classList.add('disableAnswers');
 }
 
 
 function blockCategoryButtons() {
-    var nodes = document.getElementById("menuList").getElementsByTagName('*');
-    for (var i = 0; i < nodes.length; i++) {
-        nodes[i].classList.add('disableAnswers');
+    var buttons = document.getElementById("menuList").getElementsByTagName('*');
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].classList.add('disableAnswers');
     }
 }
 
@@ -73,25 +87,25 @@ function createPlayscreen() {
             <div id="answerCards">
                 
                 <div class="card answer">
-                    <div class="card-body" id="answer1" onclick="lockinAnswer(id)">
+                    <div class="card-body" id="answer1" onclick="chooseAnswer(id)">
                         Answer 1
                     </div>
                 </div>
 
                 <div class="card answer">
-                    <div class="card-body" id="answer2" onclick="lockinAnswer(id)">
+                    <div class="card-body" id="answer2" onclick="chooseAnswer(id)">
                         Answer 2
                     </div>
                 </div>
 
                 <div class="card answer">
-                    <div class="card-body" id="answer3" onclick="lockinAnswer(id)">
+                    <div class="card-body" id="answer3" onclick="chooseAnswer(id)">
                         Answer 3
                     </div>
                 </div>
 
                 <div class="card answer">
-                    <div class="card-body" id="answer4" onclick="lockinAnswer(id)">
+                    <div class="card-body" id="answer4" onclick="chooseAnswer(id)">
                         Answer 4
                     </div>
                 </div>
@@ -164,9 +178,16 @@ function unlockAnswerButtons() {
 }
 
 
-function lockinAnswer(id) {
-    createAnswerButton(id);
-    lock(id);
+function chooseAnswer(id) {
+    deleteLockedAnswer();
+    lockinNewAnswer(id);
+    createAnswerButton(id);    
+}
+
+
+function lockinNewAnswer(id) {
+    let answerCard = document.getElementById(`${id}`);
+    answerCard.classList.add('bg-locked');
 }
 
 
@@ -174,27 +195,20 @@ function createAnswerButton(id) {
     let button = document.getElementById('buttonAnswer');
 
     button.innerHTML = /*html*/ `
-            <button id="answerBtn" type="button" class="btn btn-warning" onclick="givenAnswer('${id}')">Antworten</button>
+            <button id="answerBtn" type="button" class="btn btn-warning" onclick="checkAnswer('${id}')">Antworten</button>
         `
 }
 
 
-function lock(id) {
-    deleteLockedAnswer();
-    let answerCard = document.getElementById(`${id}`);
-    answerCard.classList.add('bg-locked');
-}
-
-
 function deleteLockedAnswer() {
-    document.getElementById(`answer1`).classList.remove('bg-locked');
-    document.getElementById(`answer2`).classList.remove('bg-locked');
-    document.getElementById(`answer3`).classList.remove('bg-locked');
-    document.getElementById(`answer4`).classList.remove('bg-locked');
+
+    for (let j = 1; j <= 4; j++) {
+        document.getElementById(`answer${j}`).classList.remove('bg-locked');
+    }
 }
 
 
-function givenAnswer(id) {
+function checkAnswer(id) {
 
     let rightAnswer = questions[v]["right_answer"];
     let givenAnswer = id.slice(-1);
@@ -203,16 +217,14 @@ function givenAnswer(id) {
 
     if (rightAnswer == givenAnswer) {
         document.getElementById(id).parentNode.classList.add('bg-success');
-        correct(button)
+        correctAnswer(button)
     } else {
         document.getElementById(id).parentNode.classList.add('bg-danger');
         document.getElementById(correctAnswerFullName).parentNode.classList.add('bg-success');
-        wrong(button);
+        wrongAnswer(button);
     }
 
-    blockAnswerButtons()
-
-
+    blockAnswerButtons();
 }
 
 
@@ -223,31 +235,36 @@ function blockAnswerButtons() {
 }
 
 
-function correct(button) {
+function correctAnswer(button) {
     score++;
     if (checkForEnd() == true) {
-        button.innerHTML = /*html*/ `
-        <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="finishedQuiz()">Spiel beenden</button>
-    `;
+        createEndbutton(button);
     } else {
-        button.innerHTML = /*html*/ `
-        <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="nextQuestion()">Nächste Frage</button>
-    `;
-        
+        createNextQuestionButton(button);        
     }
 }
 
 
-function wrong(button) {
+function wrongAnswer(button) {
     if (checkForEnd() == true) {
-        button.innerHTML = /*html*/ `
+        createEndbutton(button);
+    } else {
+        createNextQuestionButton(button);
+    }
+}
+
+
+function createEndbutton(button){
+    button.innerHTML = /*html*/ `
         <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="finishedQuiz()">Spiel beenden</button>
     `;
-    } else {
-        button.innerHTML = /*html*/ `
-        <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="nextQuestion()">Nächste Frage</button>
-    `;
-    }
+}
+
+
+function createNextQuestionButton(button){
+    button.innerHTML = /*html*/ `
+    <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="nextQuestion()">Nächste Frage</button>
+`;
 }
 
 
@@ -262,8 +279,13 @@ function checkForEnd() {
 
 
 function nextQuestion() {
+    deleteAnswerMarks();
     renderQuestion(v);
-    //in eigene Funtion und immer iweder benutzen --> deleteLocked Answer kann gelöscht werden
+    //in eigene Funtion und immer iweder benutzen --> deleteLocked Answer kann gelöscht werden    
+}
+
+
+function deleteAnswerMarks(){
     for (let j = 1; j <= 4; j++) {
         document.getElementById(`answer${j}`).parentNode.classList.remove('bg-danger');
         document.getElementById(`answer${j}`).parentNode.classList.remove('bg-success');
@@ -294,6 +316,16 @@ function startAgain() {
     v = 0;
     score = 0;
     init();
+}
+
+
+
+
+/** Funktionen für die Responsivität   */
+
+function toggleSelectionMenu(){
+    document.getElementById('menuList').classList.toggle('d-flex');
+    document.getElementById('close').classList.toggle('d-block');
 }
 
 
