@@ -30,6 +30,7 @@ function getReadyToStart(id) {
     createStartbutton();
 }
 
+
 function deleteActiveCategory() {
     document.getElementById("egypt").classList.remove('active');
     document.getElementById("sports").classList.remove('active');
@@ -49,11 +50,20 @@ function createStartbutton() {
 }
 
 function startQuiz() {
-    toggleScreens();
+    blockCategoryButtons();  
+    toggleScreens();    
     questionAmount();
-    renderQuestion(v);
-
+    renderQuestion(v);    
 }
+
+
+function blockCategoryButtons(){
+    var nodes = document.getElementById("menuList").getElementsByTagName('*');
+    for(var i = 0; i < nodes.length; i++){
+         nodes[i].classList.add('disableAnswers');
+    }
+}
+
 
 function toggleScreens() {
     document.getElementById('startscreen').innerHTML = /*html*/`
