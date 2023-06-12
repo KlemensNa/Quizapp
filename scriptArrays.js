@@ -1,4 +1,4 @@
-let egypt = [
+let questions = [
     {
         "question": "Welcher Fluss fließt durch Ägypten?",
         "answer1": "Kongo",
@@ -14,8 +14,7 @@ let egypt = [
         "answer3": "Netjer",
         "answer4": "Nesu",
         "right_answer": 1
-    }
-    // },
+    },
     // {
     //     "question": "Wie heißt die größte Pyramide auf dem Gizeh-Pateau?",
     //     "answer1": "Mykerinos-Pyramide",

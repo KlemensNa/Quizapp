@@ -1,49 +1,98 @@
 let v = 0;
+let score = 0;
 
 function init() {
+    document.getElementById('cardContain').innerHTML = /*html*/`
+        <div id="menu" class="card">
+            <img src="/img/Quizapp/logo.png" alt="">
+            <div id="menuList">
+                <h3 id="egypt" class="category" onclick="getReadyToStart('egypt')">Ägypten</h3>
+                <h3 id="sports" class="category" onclick="getReadyToStart('sports')">Sport</h3>
+                <h3 id="it" class="category" onclick="getReadyToStart('it')">IT</h3>
+                <h3 id="movies" class="category" onclick="getReadyToStart('movies')">Filme</h3>
+            </div>
+        </div>
+
+        <div id="startscreen" class="card">
+            <div id="startText">
+                <h2>Welcome to this Quiz</h2>
+                <h3>Select your Category and start!</h3>
+            </div>
+            <div id="startButton"></div>
+        </div>
+    `
 }
 
 
-function getReadyToStart(id){
+function getReadyToStart(id) {
     deleteActiveCategory();
     activateCategory(id);
-    createStartbutton(id);    
+    createStartbutton();
 }
 
-
-function deleteActiveCategory(){
+function deleteActiveCategory() {
     document.getElementById("egypt").classList.remove('active');
     document.getElementById("sports").classList.remove('active');
     document.getElementById("it").classList.remove('active');
     document.getElementById("movies").classList.remove('active');
 }
 
-
-function activateCategory(id){
+function activateCategory(id) {
     let activeCategory = document.getElementById(`${id}`);
     activeCategory.classList.add('active');
 }
 
-
-function createStartbutton(categorieID){
+function createStartbutton() {
     document.getElementById('startButton').innerHTML = /*html*/`
-        <button type="button" id="startBtn" class="btn" onclick="startQuiz(${categorieID})">Start Quiz</button>
+        <button type="button" id="startBtn" class="btn" onclick="startQuiz()">Start Quiz</button>
     `
 }
 
-
-function startQuiz(a){
+function startQuiz() {
     toggleScreens();
     questionAmount();
-    renderQuestion(a);
+    renderQuestion(v);
 
 }
 
+function toggleScreens() {
+    document.getElementById('startscreen').innerHTML = /*html*/`
+        <div class="card" id="playscreen" >
+            <!-- <img src="/img/quiztheme.jpg" class="card-img-top">             -->
+            <h2 id="question">Frage Zahl???</h2>
+            <div id="answerCards">
+                
+                <div class="card answer">
+                    <div class="card-body" id="answer1" onclick="logAnswer(id)">
+                        Answer 1
+                    </div>
+                </div>
 
-function toggleScreens(){
-    document.getElementById('startscreen').style = "display : none";
-    document.getElementById('menu').style = "display : none";
-    document.getElementById('playscreen').style = "";
+                <div class="card answer">
+                    <div class="card-body" id="answer2" onclick="logAnswer(id)">
+                        Answer 2
+                    </div>
+                </div>
+
+                <div class="card answer">
+                    <div class="card-body" id="answer3" onclick="logAnswer(id)">
+                        Answer 3
+                    </div>
+                </div>
+
+                <div class="card answer">
+                    <div class="card-body" id="answer4" onclick="logAnswer(id)">
+                        Answer 4
+                    </div>
+                </div>
+            </div>
+            <div class="cardFooter">
+                <div><b id="actualNumber">1 </b> von <b id="questionsAmount"> </b> Fragen</div>
+                <div id="buttonAnswer"></div>
+            </div>
+
+        </div>
+    `
 }
 
 
@@ -60,7 +109,7 @@ function questionAmount() {
 function renderQuestion(v) {
 
     if (v == questions.length) {
-        finishedQuiz(v);
+        finishedQuiz();
     } else {
 
         let question = document.getElementById('question');
@@ -89,6 +138,15 @@ function renderAnswers(q) {
     document.getElementById('answer2').innerHTML = q["answer2"];
     document.getElementById('answer3').innerHTML = q["answer3"];
     document.getElementById('answer4').innerHTML = q["answer4"];
+
+    unlockAnswerButtons();    
+}
+
+
+function unlockAnswerButtons(){
+    for (let j = 1; j <= 4; j++) {
+        document.getElementById(`answer${j}`).classList.remove('disableAnswers');        
+    }
 }
 
 
@@ -123,6 +181,7 @@ function deleteLockedAnswer() {
 
 
 function givenAnswer(id) {
+
     let rightAnswer = questions[v]["right_answer"];
     let givenAnswer = id.slice(-1);
     let correctAnswerFullName = `answer${rightAnswer}`;
@@ -136,19 +195,31 @@ function givenAnswer(id) {
         document.getElementById(correctAnswerFullName).parentNode.classList.add('bg-success');
         wrong(button);
     }
+
+    blockAnswerButtons()
+    
+    
+}
+
+
+function blockAnswerButtons(){
+    for (let j = 1; j <= 4; j++) {
+        document.getElementById(`answer${j}`).classList.add('disableAnswers');        
+    }
 }
 
 
 function correct(button) {
     button.innerHTML = /*html*/ `
         <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="nextQuestion()">Nächste Frage</button>
-    `
+    `;
+    score++;
 }
 
 
 function wrong(button) {
     button.innerHTML = /*html*/ `
-        <button id="restartButton" type="button" class="btn btn-danger" onclick="restartQuiz()">Nochmal</button>
+        <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="nextQuestion()">Nächste Frage</button>
     `
 }
 
@@ -177,35 +248,37 @@ function restartQuiz() {
 
 
 function finishedQuiz() {
-    document.getElementById('playscreen').style = "display: none"
-    document.getElementById('endscreen').style = "";
-    document.getElementById('finalScore').innerHTML = `${(v)}`;
+    document.getElementById('startscreen').innerHTML = /*html*/`
+        <div id="endscreen" class="card" style="display: none;">
+            <img src="./img/Quizapp/brain result.png" alt="">
+            <h2>You completed the Quiz</h2>
+            <div id="score">
+                <b id="scoreText">YOUR SCORE</b>
+                <div><b id="finalScore"></b><b>/</b><b id="maxScore"></b></div>
+            </div>
+            <div id="twoButtons">
+                <button type="button" class="btn btn-primary">Share</button>
+                <button type="button" class="btn btn-secondary" onclick="startAgain()">Quiz it Again</button>
+            </div>
+        </div>
+    `
+    // document.getElementById('playscreen').style = "display: none"
+    // document.getElementById('endscreen').style = "";
+    // document.getElementById('finalScore').innerHTML = `${(score)}`;
 
-    document.getElementById('maxScore').innerHTML = `${questions.length}`;
+    // document.getElementById('maxScore').innerHTML = `${questions.length}`;
 }
 
 
-function startAgain(){
+function startAgain() {
     document.getElementById('playscreen').style = ""
     document.getElementById('endscreen').style = "display: none";
     restartQuiz();
 }
 
 
-function disableButton(){
+function disableButton() {
     document.getElementById('buttonAnswer').innerHTML = "";
-}
-
-
-
-
-function renderMenubar(){
-
-}
-
-
-function renderStartscreen(){
-
 }
 
 

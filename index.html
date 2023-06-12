@@ -20,24 +20,6 @@
 <body onload="init()">
 
     <div id="cardContain">
-        <div id="menu" class="card">
-            <img src="/img/Quizapp/logo.png" alt="">
-            <div id="menuList">
-                <h3 id="egypt" class="category" onclick="getReadyToStart(`egypt`)">Ägypten</h3>
-                <h3 id="sports" class="category" onclick="getReadyToStart('sports')">Sport</h3>
-                <h3 id="it" class="category" onclick="getReadyToStart('it')">IT</h3>
-                <h3 id="movies" class="category" onclick="getReadyToStart('movies')">Filme</h3>
-            </div>
-        </div>
-
-        <div id="startscreen" class="card">
-            <div id="startText">
-                <h2>Welcome to this Quiz</h2>
-                <h3>Select your Category and start!</h3>
-            </div>
-            <div id="startButton"></div>
-        </div>
-
 
         <div id="endscreen" class="card" style="display: none;">
             <img src="./img/Quizapp/brain result.png" alt="">
@@ -52,39 +34,7 @@
             </div>
         </div>
 
-        <div class="card" id="playscreen" style="display: none;">
-            <img src="/img/quiztheme.jpg" class="card-img-top">
-            <h2 id="question">Frage Zahl???</h2>
-            <div class="card answer">
-                <div class="card-body" id="answer1" onclick="logAnswer(id)">
-                    Answer 1
-                </div>
-            </div>
-
-            <div class="card answer">
-                <div class="card-body" id="answer2" onclick="logAnswer(id)">
-                    Answer 2
-                </div>
-            </div>
-
-            <div class="card answer">
-                <div class="card-body" id="answer3" onclick="logAnswer(id)">
-                    Answer 3
-                </div>
-            </div>
-
-            <div class="card answer">
-                <div class="card-body" id="answer4" onclick="logAnswer(id)">
-                    Answer 4
-                </div>
-            </div>
-
-            <div class="cardFooter">
-                <div><b id="actualNumber">1 </b> von <b id="questionsAmount"> </b> Fragen</div>
-                <div id="buttonAnswer"></div>
-            </div>
-
-        </div>
+        
     </div>
 
 
