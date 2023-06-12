@@ -159,7 +159,9 @@ body{
     justify-content: center;
     align-items: center;
     gap: 16px;
-    height: 90vh;
+    height: 100%;
+    width: 100%;
+    background-color: #F7F7F7;
 }
 
 #twoButtons{

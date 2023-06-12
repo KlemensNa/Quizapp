@@ -50,22 +50,22 @@ function createStartbutton() {
 }
 
 function startQuiz() {
-    blockCategoryButtons();  
-    toggleScreens();    
-    questionAmount();
-    renderQuestion(v);    
+    blockCategoryButtons();
+    createPlayscreen();
+    showQuestionAmount();
+    renderQuestion(v);
 }
 
 
-function blockCategoryButtons(){
+function blockCategoryButtons() {
     var nodes = document.getElementById("menuList").getElementsByTagName('*');
-    for(var i = 0; i < nodes.length; i++){
-         nodes[i].classList.add('disableAnswers');
+    for (var i = 0; i < nodes.length; i++) {
+        nodes[i].classList.add('disableAnswers');
     }
 }
 
 
-function toggleScreens() {
+function createPlayscreen() {
     document.getElementById('startscreen').innerHTML = /*html*/`
         <div class="card" id="playscreen" >
             <!-- <img src="/img/quiztheme.jpg" class="card-img-top">             -->
@@ -73,25 +73,25 @@ function toggleScreens() {
             <div id="answerCards">
                 
                 <div class="card answer">
-                    <div class="card-body" id="answer1" onclick="logAnswer(id)">
+                    <div class="card-body" id="answer1" onclick="lockinAnswer(id)">
                         Answer 1
                     </div>
                 </div>
 
                 <div class="card answer">
-                    <div class="card-body" id="answer2" onclick="logAnswer(id)">
+                    <div class="card-body" id="answer2" onclick="lockinAnswer(id)">
                         Answer 2
                     </div>
                 </div>
 
                 <div class="card answer">
-                    <div class="card-body" id="answer3" onclick="logAnswer(id)">
+                    <div class="card-body" id="answer3" onclick="lockinAnswer(id)">
                         Answer 3
                     </div>
                 </div>
 
                 <div class="card answer">
-                    <div class="card-body" id="answer4" onclick="logAnswer(id)">
+                    <div class="card-body" id="answer4" onclick="lockinAnswer(id)">
                         Answer 4
                     </div>
                 </div>
@@ -106,40 +106,31 @@ function toggleScreens() {
 }
 
 
-function questionAmount() {
+function showQuestionAmount() {
     let questionsAmount = document.getElementById('questionsAmount');
     let amount = questions.length;
 
     questionsAmount.innerHTML = /*html*/`
         ${amount}
-    `
-}
+    `}
 
 
 function renderQuestion(v) {
-
-    if (v == questions.length) {
-        finishedQuiz();
-    } else {
-
-        let question = document.getElementById('question');
-        let q = questions[v];
-        question.innerHTML = /*html*/`
-        ${q['question']}
-        `
-        renderAnswers(q);
-        actualQuestionNumber(v);
-        disableButton();
-    }
+    
+    let q = questions[v];
+    
+    showQuestion(q);
+    renderAnswers(q);
+    showActualQuestionNumber(v);
+    disableAnswerButton();
 }
 
 
-function actualQuestionNumber(v) {
-    let actualNumber = v + 1;
+function showQuestion(q){
 
-    document.getElementById('actualNumber').innerHTML = /*html*/`
-        ${actualNumber}
-    `
+    document.getElementById('question').innerHTML = /*html*/`
+        ${q['question']}
+        `
 }
 
 
@@ -148,19 +139,32 @@ function renderAnswers(q) {
     document.getElementById('answer2').innerHTML = q["answer2"];
     document.getElementById('answer3').innerHTML = q["answer3"];
     document.getElementById('answer4').innerHTML = q["answer4"];
-
-    unlockAnswerButtons();    
+    unlockAnswerButtons();
 }
 
 
-function unlockAnswerButtons(){
+function showActualQuestionNumber(v) {
+    let actualNumber = v + 1;
+
+    document.getElementById('actualNumber').innerHTML = /*html*/`
+        ${actualNumber}
+    `
+}
+
+
+function disableAnswerButton() {
+    document.getElementById('buttonAnswer').innerHTML = "";
+}
+
+
+function unlockAnswerButtons() {
     for (let j = 1; j <= 4; j++) {
-        document.getElementById(`answer${j}`).classList.remove('disableAnswers');        
+        document.getElementById(`answer${j}`).classList.remove('disableAnswers');
     }
 }
 
 
-function logAnswer(id) {
+function lockinAnswer(id) {
     createAnswerButton(id);
     lock(id);
 }
@@ -207,35 +211,57 @@ function givenAnswer(id) {
     }
 
     blockAnswerButtons()
-    
-    
+
+
 }
 
 
-function blockAnswerButtons(){
+function blockAnswerButtons() {
     for (let j = 1; j <= 4; j++) {
-        document.getElementById(`answer${j}`).classList.add('disableAnswers');        
+        document.getElementById(`answer${j}`).classList.add('disableAnswers');
     }
 }
 
 
 function correct(button) {
-    button.innerHTML = /*html*/ `
+    score++;
+    if (checkForEnd() == true) {
+        button.innerHTML = /*html*/ `
+        <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="finishedQuiz()">Spiel beenden</button>
+    `;
+    } else {
+        button.innerHTML = /*html*/ `
         <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="nextQuestion()">Nächste Frage</button>
     `;
-    score++;
+        
+    }
 }
 
 
 function wrong(button) {
-    button.innerHTML = /*html*/ `
+    if (checkForEnd() == true) {
+        button.innerHTML = /*html*/ `
+        <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="finishedQuiz()">Spiel beenden</button>
+    `;
+    } else {
+        button.innerHTML = /*html*/ `
         <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="nextQuestion()">Nächste Frage</button>
-    `
+    `;
+    }
+}
+
+
+function checkForEnd() {
+    v++;
+    if (v == questions.length) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 
 function nextQuestion() {
-    v++;
     renderQuestion(v);
     //in eigene Funtion und immer iweder benutzen --> deleteLocked Answer kann gelöscht werden
     for (let j = 1; j <= 4; j++) {
@@ -246,25 +272,14 @@ function nextQuestion() {
 }
 
 
-function restartQuiz() {
-    v = 0;
-    renderQuestion(v);
-    for (let j = 1; j <= 4; j++) {
-        document.getElementById(`answer${j}`).parentNode.classList.remove('bg-danger');
-        document.getElementById(`answer${j}`).parentNode.classList.remove('bg-success');
-        document.getElementById(`answer${j}`).classList.remove('bg-locked');
-    }
-}
-
-
 function finishedQuiz() {
     document.getElementById('startscreen').innerHTML = /*html*/`
-        <div id="endscreen" class="card" style="display: none;">
+        <div id="endscreen" class="card">
             <img src="./img/Quizapp/brain result.png" alt="">
             <h2>You completed the Quiz</h2>
             <div id="score">
                 <b id="scoreText">YOUR SCORE</b>
-                <div><b id="finalScore"></b><b>/</b><b id="maxScore"></b></div>
+                <div><b id="finalScore">${score}</b><b>/</b><b id="maxScore">${v}</b></div>
             </div>
             <div id="twoButtons">
                 <button type="button" class="btn btn-primary">Share</button>
@@ -272,23 +287,13 @@ function finishedQuiz() {
             </div>
         </div>
     `
-    // document.getElementById('playscreen').style = "display: none"
-    // document.getElementById('endscreen').style = "";
-    // document.getElementById('finalScore').innerHTML = `${(score)}`;
-
-    // document.getElementById('maxScore').innerHTML = `${questions.length}`;
 }
 
 
 function startAgain() {
-    document.getElementById('playscreen').style = ""
-    document.getElementById('endscreen').style = "display: none";
-    restartQuiz();
-}
-
-
-function disableButton() {
-    document.getElementById('buttonAnswer').innerHTML = "";
+    v = 0;
+    score = 0;
+    init();
 }
 
 
