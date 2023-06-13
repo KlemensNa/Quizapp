@@ -3,21 +3,20 @@ let score = 0;
 
 function init() {
     document.getElementById('cardContain').innerHTML = /*html*/`
-    
         <div id="menu" class="card">
-            <img src="/img/Quizapp/logo.png" alt="">
+            <img src="img/Quizapp/logo.png" alt="">
             <div id="menuList">
-                <h3 id="egypt" class="category" onclick="getReadyToStart('egypt')">Ägypten</h3>
-                <h3 id="sports" class="category" onclick="getReadyToStart('sports')">Sport</h3>
-                <h3 id="it" class="category" onclick="getReadyToStart('it')">IT</h3>
-                <h3 id="movies" class="category" onclick="getReadyToStart('movies')">Filme</h3>
-                <button type="button" id="close" class="btn" onclick="toggleSelectionMenu()">Close</button>                   
+                <h3 id="egypt" class="category" onclick="getReadyToStart(id, 'one')">Ägypten</h3>
+                <h3 id="sports" class="category" onclick="getReadyToStart(id, 'two')">Sport</h3>
+                <h3 id="it" class="category" onclick="getReadyToStart(id, 'three')">IT</h3>
+                <h3 id="movies" class="category" onclick="getReadyToStart(id, 'four')">Filme</h3>
+                <button type="button" id="close" class="btn" onclick="toggleSelectionMenu()">Close</button>                
             </div>
             <div id="burgerMenu" onclick="toggleSelectionMenu()">
-                <p></p>
-                <p></p>
-                <p></p>
-            </div>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                </div>
         </div>
 
         <div id="startscreen" class="card">
@@ -31,10 +30,11 @@ function init() {
 }
 
 
-function getReadyToStart(id) {
+function getReadyToStart(id, a) {
+    console.log(a);
     deleteActiveCategory();
     activateCategory(id);
-    createStartbutton();
+    createStartbutton(id, a);
 }
 
 
@@ -50,24 +50,22 @@ function activateCategory(id) {
     activeCategory.classList.add('active');
 }
 
-function createStartbutton() {
+function createStartbutton(id, a) {
     document.getElementById('startButton').innerHTML = /*html*/`
-        <button type="button" id="startBtn" class="btn" onclick="startQuiz()">Start Quiz</button>
+        <button type="button" id="startBtn" class="btn" onclick="startQuiz('${id}', ${a}, '${a}')">Start Quiz</button>
     `
 }
 
-function startQuiz() {
+function startQuiz(id, a, aString) {
+    console.log(id);
+    console.log(a);
     blockCategoryButtons();
-    blockBurgerMenu();
-    createPlayscreen();
-    showQuestionAmount();
-    renderQuestion(v);
+    createPlayscreen(aString);
+    showQuestionAmount(a);
+    renderQuestion(v, a);
     toggleSelectionMenu();
-}
-
-
-function blockBurgerMenu(){
-    document.getElementById('burgerMenu').classList.add('disableAnswers');
+    dontShowCloseBtn();
+    blockBurgerMenu();
 }
 
 
@@ -79,33 +77,32 @@ function blockCategoryButtons() {
 }
 
 
-function createPlayscreen() {
+function createPlayscreen(a) {
     document.getElementById('startscreen').innerHTML = /*html*/`
         <div class="card" id="playscreen" >
-            <!-- <img src="/img/quiztheme.jpg" class="card-img-top">             -->
             <h2 id="question">Frage Zahl???</h2>
             <div id="answerCards">
                 
                 <div class="card answer">
-                    <div class="card-body" id="answer1" onclick="chooseAnswer(id)">
+                    <div class="card-body" id="answer1" onclick="chooseAnswer(id, '${a}')">
                         Answer 1
                     </div>
                 </div>
 
                 <div class="card answer">
-                    <div class="card-body" id="answer2" onclick="chooseAnswer(id)">
+                    <div class="card-body" id="answer2" onclick="chooseAnswer(id, '${a}')">
                         Answer 2
                     </div>
                 </div>
 
                 <div class="card answer">
-                    <div class="card-body" id="answer3" onclick="chooseAnswer(id)">
+                    <div class="card-body" id="answer3" onclick="chooseAnswer(id, '${a}')">
                         Answer 3
                     </div>
                 </div>
 
                 <div class="card answer">
-                    <div class="card-body" id="answer4" onclick="chooseAnswer(id)">
+                    <div class="card-body" id="answer4" onclick="chooseAnswer(id, '${a}')">
                         Answer 4
                     </div>
                 </div>
@@ -120,19 +117,18 @@ function createPlayscreen() {
 }
 
 
-function showQuestionAmount() {
+function showQuestionAmount(a) {
     let questionsAmount = document.getElementById('questionsAmount');
-    let amount = questions.length;
+    let amount = a.length;
 
     questionsAmount.innerHTML = /*html*/`
         ${amount}
     `}
 
 
-function renderQuestion(v) {
-    
-    let q = questions[v];
-    
+function renderQuestion(v, a) {
+    console.log(a);
+    let q = a[v];
     showQuestion(q);
     renderAnswers(q);
     showActualQuestionNumber(v);
@@ -178,10 +174,14 @@ function unlockAnswerButtons() {
 }
 
 
-function chooseAnswer(id) {
+function chooseAnswer(id, a) {
+    console.log(id);
+    console.log(a);
+    let b = eval(a);
+    console.log(b);
     deleteLockedAnswer();
     lockinNewAnswer(id);
-    createAnswerButton(id);    
+    createAnswerButton(id, a);    
 }
 
 
@@ -191,11 +191,11 @@ function lockinNewAnswer(id) {
 }
 
 
-function createAnswerButton(id) {
+function createAnswerButton(id, a) {
     let button = document.getElementById('buttonAnswer');
 
     button.innerHTML = /*html*/ `
-            <button id="answerBtn" type="button" class="btn btn-warning" onclick="checkAnswer('${id}')">Antworten</button>
+            <button id="answerBtn" type="button" class="btn btn-warning" onclick="checkAnswer('${id}', ${a}, '${a}')">Antworten</button>
         `
 }
 
@@ -208,20 +208,21 @@ function deleteLockedAnswer() {
 }
 
 
-function checkAnswer(id) {
-
-    let rightAnswer = questions[v]["right_answer"];
+function checkAnswer(id, a, aString) {
+    console.log(a);
+    console.log(aString);
+    let rightAnswer = a[v]["right_answer"];
     let givenAnswer = id.slice(-1);
     let correctAnswerFullName = `answer${rightAnswer}`;
     let button = document.getElementById('buttonAnswer');
 
     if (rightAnswer == givenAnswer) {
         document.getElementById(id).parentNode.classList.add('bg-success');
-        correctAnswer(button)
+        correctAnswer(button, a, aString)
     } else {
         document.getElementById(id).parentNode.classList.add('bg-danger');
         document.getElementById(correctAnswerFullName).parentNode.classList.add('bg-success');
-        wrongAnswer(button);
+        wrongAnswer(button, a, aString);
     }
 
     blockAnswerButtons();
@@ -235,21 +236,23 @@ function blockAnswerButtons() {
 }
 
 
-function correctAnswer(button) {
+function correctAnswer(button, a, aString) {
     score++;
-    if (checkForEnd() == true) {
+    console.log(a);
+    console.log(aString);
+    if (checkForEnd(a) == true) {
         createEndbutton(button);
     } else {
-        createNextQuestionButton(button);        
+        createNextQuestionButton(button, aString);        
     }
 }
 
 
-function wrongAnswer(button) {
-    if (checkForEnd() == true) {
+function wrongAnswer(button, a, aString) {
+    if (checkForEnd(a) == true) {
         createEndbutton(button);
     } else {
-        createNextQuestionButton(button);
+        createNextQuestionButton(button, aString);
     }
 }
 
@@ -261,16 +264,16 @@ function createEndbutton(button){
 }
 
 
-function createNextQuestionButton(button){
+function createNextQuestionButton(button, aString){
     button.innerHTML = /*html*/ `
-    <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="nextQuestion()">Nächste Frage</button>
+    <button id="nextQuestionButton" type="button" class="btn btn-success" onclick="nextQuestion(${aString})">Nächste Frage</button>
 `;
 }
 
 
-function checkForEnd() {
+function checkForEnd(a) {
     v++;
-    if (v == questions.length) {
+    if (v == a.length) {
         return true;
     } else {
         return false;
@@ -278,9 +281,10 @@ function checkForEnd() {
 }
 
 
-function nextQuestion() {
+function nextQuestion(a) {
+    console.log(a);
     deleteAnswerMarks();
-    renderQuestion(v);
+    renderQuestion(v, a);
     //in eigene Funtion und immer iweder benutzen --> deleteLocked Answer kann gelöscht werden    
 }
 
@@ -297,7 +301,7 @@ function deleteAnswerMarks(){
 function finishedQuiz() {
     document.getElementById('startscreen').innerHTML = /*html*/`
         <div id="endscreen" class="card">
-            <img src="./img/Quizapp/brain result.png" alt="">
+            <img src="img/Quizapp/brain result.png" alt="">
             <h2>You completed the Quiz</h2>
             <div id="score">
                 <b id="scoreText">YOUR SCORE</b>
@@ -320,7 +324,6 @@ function startAgain() {
 
 
 
-
 /** Funktionen für die Responsivität   */
 
 function toggleSelectionMenu(){
@@ -328,6 +331,15 @@ function toggleSelectionMenu(){
     document.getElementById('close').classList.toggle('d-block');
 }
 
+
+function dontShowCloseBtn(){
+    document.getElementById('close').classList.remove('d-block');
+}
+
+
+function blockBurgerMenu(){
+    document.getElementById('burgerMenu').classList.add('d-none');
+}
 
 
 

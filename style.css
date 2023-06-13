@@ -81,6 +81,7 @@ body{
     gap: 14px;
     height: 90%;
     padding-top: 40px;
+    margin-bottom: 70px;
 }
 
 #playscreen{
@@ -158,7 +159,7 @@ body{
 }
 
 .d-block{
-    display: block !important;
+    display: block;
 }
 
 #endscreen{
@@ -312,5 +313,13 @@ body{
     #menuList{
         justify-content: flex-end;
     }
+
+    /* /* #playscreen h2{
+        margin-top:16px;
+    } */
+
+    
+
+    
 
 }
