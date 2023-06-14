@@ -4,7 +4,7 @@ let score = 0;
 function init() {
     document.getElementById('cardContain').innerHTML = /*html*/`
         <div id="menu" class="card">
-            <img src="img/Quizapp/logo.png" alt="">
+            <img src="img/Quizapp/logo.png" alt="" onclick="init()">
             <div id="menuList">
                 <h3 id="egypt" class="category" onclick="getReadyToStart(id, 'one')">Ägypten</h3>
                 <h3 id="sports" class="category" onclick="getReadyToStart(id, 'two')">Sport</h3>
@@ -16,13 +16,13 @@ function init() {
                     <p></p>
                     <p></p>
                     <p></p>
-                </div>
+            </div>
         </div>
 
         <div id="startscreen" class="card">
             <div id="startText">
                 <h2>Welcome to this Quiz</h2>
-                <h3>Select your Category and start!</h3>
+                <h3 id="showCategory">Select your Category and start!</h3>
             </div>
             <div id="startButton"></div>
         </div>
@@ -31,9 +31,9 @@ function init() {
 
 
 function getReadyToStart(id, a) {
-    console.log(a);
     deleteActiveCategory();
     activateCategory(id);
+    updateStartscreen(id);
     createStartbutton(id, a);
 }
 
@@ -45,10 +45,20 @@ function deleteActiveCategory() {
     document.getElementById("movies").classList.remove('active');
 }
 
+
 function activateCategory(id) {
     let activeCategory = document.getElementById(`${id}`);
     activeCategory.classList.add('active');
 }
+
+
+function updateStartscreen(id){
+    let category = document.getElementById(`${id}`).innerHTML;
+    let categoryField = document.getElementById('showCategory');
+
+    categoryField.innerHTML = `<b>${category}</b>`;
+}
+
 
 function createStartbutton(id, a) {
     document.getElementById('startButton').innerHTML = /*html*/`
@@ -56,30 +66,29 @@ function createStartbutton(id, a) {
     `
 }
 
+
 function startQuiz(id, a, aString) {
-    console.log(id);
-    console.log(a);
     blockCategoryButtons();
     createPlayscreen(aString);
     showQuestionAmount(a);
     renderQuestion(v, a);
-    toggleSelectionMenu();
-    dontShowCloseBtn();
     blockBurgerMenu();
 }
 
 
 function blockCategoryButtons() {
-    var buttons = document.getElementById("menuList").getElementsByTagName('*');
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].classList.add('disableAnswers');
-    }
+    var buttons = document.getElementById("menuList");
+        buttons.innerHTML = '';
+        buttons.classList.add('d-none');
 }
 
 
 function createPlayscreen(a) {
     document.getElementById('startscreen').innerHTML = /*html*/`
-        <div class="card" id="playscreen" >
+        <div class="card" id="playscreen">
+            <div class="progress" id="progressBar" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width: 25%">25%</div>
+            </div>
             <h2 id="question">Frage Zahl???</h2>
             <div id="answerCards">
                 
@@ -127,7 +136,6 @@ function showQuestionAmount(a) {
 
 
 function renderQuestion(v, a) {
-    console.log(a);
     let q = a[v];
     showQuestion(q);
     renderAnswers(q);
@@ -175,10 +183,7 @@ function unlockAnswerButtons() {
 
 
 function chooseAnswer(id, a) {
-    console.log(id);
-    console.log(a);
     let b = eval(a);
-    console.log(b);
     deleteLockedAnswer();
     lockinNewAnswer(id);
     createAnswerButton(id, a);    
@@ -209,8 +214,6 @@ function deleteLockedAnswer() {
 
 
 function checkAnswer(id, a, aString) {
-    console.log(a);
-    console.log(aString);
     let rightAnswer = a[v]["right_answer"];
     let givenAnswer = id.slice(-1);
     let correctAnswerFullName = `answer${rightAnswer}`;
@@ -238,8 +241,6 @@ function blockAnswerButtons() {
 
 function correctAnswer(button, a, aString) {
     score++;
-    console.log(a);
-    console.log(aString);
     if (checkForEnd(a) == true) {
         createEndbutton(button);
     } else {
@@ -282,7 +283,6 @@ function checkForEnd(a) {
 
 
 function nextQuestion(a) {
-    console.log(a);
     deleteAnswerMarks();
     renderQuestion(v, a);
     //in eigene Funtion und immer iweder benutzen --> deleteLocked Answer kann gelöscht werden    
@@ -340,6 +340,7 @@ function dontShowCloseBtn(){
 function blockBurgerMenu(){
     document.getElementById('burgerMenu').classList.add('d-none');
 }
+
 
 
 

@@ -18,6 +18,17 @@ body{
     width: 80%;
 }
 
+#startText{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#startText h2{
+    margin-left: 0;
+}
+
 #startscreen{
     height: 75%;
     flex: 1;
@@ -32,12 +43,13 @@ body{
 #startBtn{
     background-color: #27355C;
     color: white;
+    margin-bottom: 40px;
 }
 
 #menu{
     height: 75%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     width: 20%; 
     background-color: #27355C;
@@ -45,7 +57,8 @@ body{
 }
 
 #menu img{
-    margin-top: 80px;
+    margin-top: 24px;
+    cursor: pointer;
 }
 
 #menuList{
@@ -56,6 +69,11 @@ body{
     gap: 32px;
     padding: 120px 0;    
     width: 100%
+}
+
+#cancelBtn{
+    background-color: #9DA8C6;
+    color: #27355C;
 }
 
 .category{
@@ -78,10 +96,9 @@ body{
     width: 70%;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    justify-content: space-evenly;
     height: 90%;
-    padding-top: 40px;
-    margin-bottom: 70px;
+    padding: 20px 0;
 }
 
 #playscreen{
@@ -90,6 +107,7 @@ body{
     width: 100%;
     display: flex;
     flex-direction: column;  
+    justify-content: space-between;
 }
 
 #playscreen img{
@@ -97,8 +115,9 @@ body{
     object-fit: cover;
 }
 
-#playscreen h2{
-    margin-top: 60px;
+#question{
+    text-align: center;
+    hyphens: auto;
 }
 
 .card{
@@ -133,13 +152,17 @@ body{
 }
 
 .cardFooter{
-    position: absolute;
-    bottom: 0;
     width: 95%;
+    min-height: 65px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding: 12px 0;
     border-top: 1px solid rgba(0, 0, 0, 0.479);
+}
+
+#progressBar{
+    width: 100%;
 }
 
 .d-block{
@@ -192,10 +215,6 @@ body{
 
 #scoreText{
     color: rgb(226, 169, 11);
-}
-
-.btn{
-    min-width: 140px;
 }
 
 .bg-success, .bg-danger{
@@ -285,7 +304,9 @@ body{
 @media(max-width: 576px){
 
     #startscreen{
-        background-size: cover;        
+        background-size: cover;
+        justify-content: end;    
+        gap: 40px; 
     }
 
 
@@ -310,13 +331,8 @@ body{
        display: flex;
     }
 
-    #menuList{
-        justify-content: flex-end;
-    }
 
-    /* /* #playscreen h2{
-        margin-top:16px;
-    } */
+   
 
     
 
