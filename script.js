@@ -86,8 +86,8 @@ function blockCategoryButtons() {
 function createPlayscreen(a) {
     document.getElementById('startscreen').innerHTML = /*html*/`
         <div class="card" id="playscreen">
-            <div class="progress" id="progressBar" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar" style="width: 25%">25%</div>
+            <div class="progress" id="progressBarContainer"  role="progressbar" aria-label="Example with label" style="width: 100%" >
+                <div class="progress-bar" id="progressBar"></div>
             </div>
             <h2 id="question">Frage Zahl???</h2>
             <div id="answerCards">
@@ -137,10 +137,18 @@ function showQuestionAmount(a) {
 
 function renderQuestion(v, a) {
     let q = a[v];
+    updateProgressbar(v, a);
     showQuestion(q);
     renderAnswers(q);
     showActualQuestionNumber(v);
     disableAnswerButton();
+}
+
+
+function updateProgressbar(v, a){
+    let percent = ((v/a.length) * 100).toFixed(0);
+    document.getElementById('progressBar').innerHTML = `${percent}%`;
+    document.getElementById('progressBar').style = `width: ${percent}%`;
 }
 
 
@@ -285,7 +293,6 @@ function checkForEnd(a) {
 function nextQuestion(a) {
     deleteAnswerMarks();
     renderQuestion(v, a);
-    //in eigene Funtion und immer iweder benutzen --> deleteLocked Answer kann gelöscht werden    
 }
 
 
@@ -308,8 +315,8 @@ function finishedQuiz() {
                 <div><b id="finalScore">${score}</b><b>/</b><b id="maxScore">${v}</b></div>
             </div>
             <div id="twoButtons">
-                <button type="button" class="btn btn-primary">Share</button>
-                <button type="button" class="btn btn-secondary" onclick="startAgain()">Quiz it Again</button>
+                <button type="button" class="btn btn-primary endscreenBtn">Share</button>
+                <button type="button" class="btn btn-secondary endscreenBtn" onclick="startAgain()">Quiz again</button>
             </div>
         </div>
     `

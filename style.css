@@ -163,7 +163,13 @@ body{
 
 #progressBar{
     width: 100%;
+    background-color: #27355C;
 }
+
+#progressBarContainer{
+    border-radius: 4px;
+}
+
 
 .d-block{
     display: block;
@@ -250,6 +256,10 @@ body{
     display: none;
     background-color: #9DA8C6;
     color: #27355C;
+}
+
+.endscreenBtn{
+    min-width: 160px;
 }
 
 
